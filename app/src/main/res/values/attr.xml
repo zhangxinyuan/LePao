@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ShowPercentView">
+        <attr name="percent" format="integer"></attr>
+        <attr name="allLineColor" format="color"></attr>
+        <attr name="percentLineColorLow" format="color"></attr>
+        <attr name="percentLineColorHight" format="color"></attr>
+    </declare-styleable>
+</resources>
