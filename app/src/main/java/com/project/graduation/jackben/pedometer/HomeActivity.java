@@ -1,9 +1,9 @@
 package com.project.graduation.jackben.pedometer;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -149,7 +149,7 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener {
 
     private void ReplaceFragment(Fragment fragment) {
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment, fragment, "homefragment").setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+        getFragmentManager().beginTransaction().replace(R.id.home_fragment, fragment, "homefragment").setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
     }
 
 }

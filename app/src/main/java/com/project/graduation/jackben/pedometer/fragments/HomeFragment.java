@@ -1,5 +1,6 @@
 package com.project.graduation.jackben.pedometer.fragments;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -9,7 +10,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +21,14 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.project.graduation.jackben.pedometer.R;
 import com.project.graduation.jackben.pedometer.service.StepCountService;
 import com.project.graduation.jackben.pedometer.utils.StepCountDetector;
 import com.project.graduation.jackben.pedometer.view.ShowPercentView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 计步界面
@@ -187,11 +189,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private LineData getData(int count, float range) {
-        ArrayList<String> xVals = new ArrayList<String>();
+        List<String> xVals = new ArrayList<String>();
         for (int i = 0; i < count; i++) {
             xVals.add(i + "");
         }
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        List<Entry> yVals = new ArrayList<Entry>();
         for (int i = 0; i < count; i++) {
             float mult = range + 1;
             float val = (float) (Math.random() * mult + 3);
@@ -207,7 +209,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         set1.setDrawValues(false);//不显示数值
         set1.setDrawCubic(true);//以函数形式输出
         set1.setDrawFilled(true);//填充
-        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(set1);
         LineData data = new LineData(xVals, dataSets);
         return data;
