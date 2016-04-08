@@ -29,4 +29,6 @@ dependencies {
     compile 'com.specyci:residemenu:1.6+'
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
     compile 'cn.bmob.android:bmob-sdk:3.4.5'
+    compile files('libs/AMap_3DMap_V3.3.0_20160331.jar')
+    compile files('libs/AMap_Location_V2.4.0_20160308.jar')
 }
