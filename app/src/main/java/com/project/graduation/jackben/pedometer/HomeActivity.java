@@ -95,11 +95,11 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void initFragments() {
-        homeFragment = new HomeFragment();
-        currentLocationFragment = new CurrentLocationFragment();
-        friendContestFragment = new FriendContestFragment();
-        sportsHistoryFragment = new SportsHistoryFragment();
-        settingFragment = new SettingFragment();
+        homeFragment = HomeFragment.getInstance();
+        currentLocationFragment = CurrentLocationFragment.getInstance();
+        friendContestFragment = FriendContestFragment.getInstance();
+        sportsHistoryFragment = SportsHistoryFragment.getInstance();
+        settingFragment = SettingFragment.getInstance();
     }
 
     @Override
@@ -116,8 +116,7 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_personal_center) {
             startActivity(new Intent(HomeActivity.this, UserActivity.class));
             return true;
         }
@@ -138,10 +137,8 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener {
             ReplaceFragment(friendContestFragment);
 
         } else if (v == item3) {
-
             ReplaceFragment(sportsHistoryFragment);
         } else if (v == item4) {
-
             ReplaceFragment(settingFragment);
         }
         mResideMenu.closeMenu();
@@ -149,7 +146,9 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener {
 
     private void ReplaceFragment(Fragment fragment) {
 
-        getFragmentManager().beginTransaction().replace(R.id.home_fragment, fragment, "homefragment").setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.container_fragment, fragment)
+                .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
     }
 
 }

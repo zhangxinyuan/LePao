@@ -16,7 +16,17 @@ import com.project.graduation.jackben.pedometer.R;
  */
 public class SportsHistoryFragment extends Fragment {
     private View view;
-
+    private static SportsHistoryFragment mSportsHistoryFragment=null;
+    public static SportsHistoryFragment getInstance() {
+        if (mSportsHistoryFragment == null) {
+            synchronized (SportsHistoryFragment.class) {
+                if (mSportsHistoryFragment == null) {
+                    mSportsHistoryFragment = new SportsHistoryFragment();
+                }
+            }
+        }
+        return mSportsHistoryFragment;
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

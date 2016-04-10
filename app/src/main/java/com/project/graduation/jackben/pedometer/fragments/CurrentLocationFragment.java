@@ -18,7 +18,6 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
 import com.project.graduation.jackben.pedometer.R;
 
@@ -32,6 +31,7 @@ import java.util.Date;
  */
 public class CurrentLocationFragment extends Fragment implements AMapLocationListener, LocationSource {
     private static final String TAG = "CurrentLocationFragment";
+    private static CurrentLocationFragment mCurrentLocationFragment = null;
     View view;
     MapView mapView;
     AMap aMap;
@@ -41,13 +41,25 @@ public class CurrentLocationFragment extends Fragment implements AMapLocationLis
     public AMapLocationClientOption mLocationOption = null;
     //未知改变监听
     private OnLocationChangedListener mListener;
-    //以前的定位点
+    //旧的定位点
     private LatLng oldLatLng;
     //是否是第一次定位
     private boolean isFirstLatLng;
 
+    public static CurrentLocationFragment getInstance() {
+        if (mCurrentLocationFragment == null) {
+            synchronized (CurrentLocationFragment.class) {
+                if (mCurrentLocationFragment == null) {
+                    mCurrentLocationFragment = new CurrentLocationFragment();
+                }
+            }
+        }
+        return mCurrentLocationFragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         view = inflater.inflate(R.layout.fragment_currentlocation, container, false);
         mapView = (MapView) view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -127,7 +139,7 @@ public class CurrentLocationFragment extends Fragment implements AMapLocationLis
         //设置是否允许模拟位置,默认为false，不允许模拟位置
         mLocationOption.setMockEnable(false);
         //设置定位间隔,单位毫秒,默认为2000ms
-        mLocationOption.setInterval(2000);
+        mLocationOption.setInterval(1000);
         //给定位客户端对象设置定位参数
         mLocationClient.setLocationOption(mLocationOption);
         //启动定位
@@ -167,12 +179,13 @@ public class CurrentLocationFragment extends Fragment implements AMapLocationLis
 
     /**
      * 画线
+     *
      * @param oldLatLng
      * @param newLatLng
      */
     private void drawLine(LatLng oldLatLng, LatLng newLatLng) {
-
-        aMap.addPolyline(new PolylineOptions().add(oldLatLng, newLatLng).geodesic(true).color(Color.BLUE));
+        Log.i(TAG, "begin drawLine");
+        aMap.addPolyline(new PolylineOptions().add(oldLatLng, newLatLng).geodesic(true).color(Color.RED));
     }
 
     private void getLocationData(AMapLocation amapLocation) {
@@ -204,12 +217,14 @@ public class CurrentLocationFragment extends Fragment implements AMapLocationLis
     @Override
     public void onResume() {
         super.onResume();
+        Log.i(TAG, "onResume");
         mapView.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        Log.i(TAG, "onPause");
         mapView.onPause();
         deactivate();
     }
@@ -217,17 +232,22 @@ public class CurrentLocationFragment extends Fragment implements AMapLocationLis
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        Log.i(TAG, "onSaveInstanceState");
         mapView.onSaveInstanceState(outState);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.i(TAG, "onDestroy");
         mapView.onDestroy();
         if (null != mLocationClient) {
             mLocationClient.onDestroy();
         }
     }
 
-
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 }

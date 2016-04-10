@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
@@ -37,6 +36,7 @@ import java.util.List;
  * Time: 12:35
  */
 public class HomeFragment extends Fragment implements View.OnClickListener {
+    private static  HomeFragment mHomeFragment=null;
     private View view;
     private FloatingActionButton fab;
     private ShowPercentView mCircleView;
@@ -59,8 +59,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         }
     };
-
-    @Nullable
+    public static HomeFragment getInstance(){
+        if (mHomeFragment==null){
+            synchronized (HomeFragment.class){
+                if (mHomeFragment==null){
+                    mHomeFragment=new HomeFragment();
+                }
+            }
+        }
+        return mHomeFragment;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);

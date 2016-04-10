@@ -16,6 +16,18 @@ import com.project.graduation.jackben.pedometer.R;
  */
 public class SettingFragment extends Fragment {
     private View view;
+    private static SettingFragment mSettingFragment = null;
+
+    public static SettingFragment getInstance() {
+        if (mSettingFragment == null) {
+            synchronized (SettingFragment.class) {
+                if (mSettingFragment == null) {
+                    mSettingFragment = new SettingFragment();
+                }
+            }
+        }
+        return mSettingFragment;
+    }
 
     @Nullable
     @Override

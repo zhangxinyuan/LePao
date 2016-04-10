@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".HomeActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_personal_center"
         android:icon="@drawable/menu_my"
-        android:title="@string/setting"
+        android:title="@string/personal_center"
         app:showAsAction="always" />
 </menu>
