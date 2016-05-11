@@ -13,10 +13,19 @@ public class UserBean extends BmobObject {
     private String userId;
     private String userName;
     private String userSex;
-    private byte[] userPic;
+    private String userPic;
     private Integer userWeight;
     private Integer userHeight;
     private Integer userSensitivity;
+    private Integer userStepLength;
+
+    public Integer getUserStepLength() {
+        return userStepLength;
+    }
+
+    public void setUserStepLength(Integer userStepLength) {
+        this.userStepLength = userStepLength;
+    }
 
     public String getUserId() {
         return userId;
@@ -50,11 +59,11 @@ public class UserBean extends BmobObject {
         this.userSex = userSex;
     }
 
-    public byte[] getUserPic() {
+    public String getUserPic() {
         return userPic;
     }
 
-    public void setUserPic(byte[] userPic) {
+    public void setUserPic(String userPic) {
         this.userPic = userPic;
     }
 

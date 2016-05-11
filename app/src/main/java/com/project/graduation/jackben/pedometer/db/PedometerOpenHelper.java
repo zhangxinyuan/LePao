@@ -13,16 +13,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class PedometerOpenHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "pedometer";
+    private static final String DATABASE_NAME = "lepao.db";
     private static final String USER_TABLE_NAME = "user";
     private static final String STEP_TABLE_NAME = "step";
 
-    private static final String STEP_TABLE_CREATE = "CREATE TABLE" + STEP_TABLE_NAME + "("
+    private static final String STEP_TABLE_CREATE = "CREATE TABLE " + STEP_TABLE_NAME + "("
             + "_id integer primary key autoincrement," + "userId TEXT," + "stepCount integer," + "date TEXT" + ")";
-    private static final String USER_TABLE_CREATE = "CREATE TABLE" + USER_TABLE_NAME + "(" + "userId TEXT," + "userName TEXT,"
-            + "userSex TEXT," + "userPic BLOB," + "userWeight integer," + "userHeight integer," + "userSensitivity integer" + ")";
+    private static final String USER_TABLE_CREATE = "CREATE TABLE " + USER_TABLE_NAME + "(" +"_id integer primary key autoincrement," + "userId TEXT," + "userName TEXT,"
+            + "userSex TEXT," + "userPic BLOB," + "userWeight integer," + "userHeight integer," + "userSensitivity integer," + "userStepLength integer" + ")";
 
-     PedometerOpenHelper(Context context) {
+    PedometerOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

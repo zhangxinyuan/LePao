@@ -2,13 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorWhite"
-    >
+                android:background="@color/setting_bg_color">
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:background="@drawable/ic_line_horizontal"/>
+        android:background="@mipmap/list_divider"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,16 +23,26 @@
             <RelativeLayout
                 android:id="@+id/them_change"
                 android:layout_width="fill_parent"
-                android:layout_height="50dp"
+                android:layout_height="80dp"
                 android:background="@drawable/select_selector">
+
+                <ImageView
+                    android:id="@+id/user_icon"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/menu_my"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:textSize="16sp"/>
+                    android:layout_toRightOf="@id/user_icon"
+                    android:text="打扰了"
+                    android:textSize="25sp"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -49,7 +58,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/them_change"
-                android:background="@drawable/ic_line_horizontal"
+                android:background="@mipmap/list_divider"
                 />
 
             <RelativeLayout
@@ -67,25 +76,26 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
+                    android:text="计步器设置"
                     android:textSize="16sp"/>
 
-                <ToggleButton
-                    android:id="@+id/cb_msg_warn"
-                    android:layout_width="55dp"
-                    android:layout_height="30dp"
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
-                    android:checked="true"
-                    android:textOff=""
-                    android:textOn=""/>
+                    android:background="@drawable/btn_go"
+                    />
+
             </RelativeLayout>
 
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/setting_msg_warn"
-                android:background="@drawable/ic_line_horizontal"
+                android:background="@mipmap/list_divider"
                 />
 
             <ImageView
@@ -93,7 +103,7 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/setting_msg_warn"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/ic_line_horizontal"
+                android:background="@mipmap/list_divider"
                 />
 
             <RelativeLayout
@@ -112,6 +122,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
+                    android:text="消息通知"
                     android:textSize="16sp"/>
 
                 <ImageView
@@ -128,7 +139,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/setting_remove_cache"
-                android:background="@drawable/ic_line_horizontal"
+                android:background="@mipmap/list_divider"
                 />
 
             <RelativeLayout
@@ -140,12 +151,14 @@
                 android:background="@drawable/select_selector"
                 android:clickable="true">
 
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
+                    android:text="离线地图"
                     android:textSize="16sp"/>
 
                 <ImageView
@@ -162,7 +175,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/seeting_share"
-                android:background="@drawable/ic_line_horizontal"
+                android:background="@mipmap/list_divider"
                 />
 
             <ImageView
@@ -170,7 +183,7 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/seeting_share"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/ic_line_horizontal"
+                android:background="@mipmap/list_divider"
                 />
 
             <RelativeLayout
@@ -188,6 +201,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
+                    android:text="检查更新"
                     android:textSize="16sp"/>
 
                 <ImageView
@@ -204,7 +218,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/setting_sofw_update"
-                android:background="@drawable/ic_line_horizontal"
+                android:background="@mipmap/list_divider"
                 />
 
             <RelativeLayout
@@ -222,6 +236,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
+
+                    android:text="意见反馈"
                     android:textSize="16sp"/>
 
                 <ImageView
@@ -238,7 +254,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/setting_suggest"
-                android:background="@drawable/ic_line_horizontal"
+                android:background="@mipmap/list_divider"
                 />
 
             <RelativeLayout
@@ -256,6 +272,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
+                    android:text="关于我们"
                     android:textSize="16sp"/>
 
                 <ImageView
@@ -272,19 +289,21 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/seeting_about"
-                android:background="@drawable/ic_line_horizontal"
+                android:background="@mipmap/list_divider"
                 />
 
             <Button
-                android:id="@+id/exit"
-                android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:layout_below="@+id/seeting_about"
+                android:id="@+id/exit_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/seeting_about"
                 android:layout_marginBottom="30dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="30dp"
-                android:textColor="@android:color/white"/>
+                android:layout_marginTop="40dp"
+                android:background="@color/colorWhite"
+                android:text="退出账号"
+                />
         </RelativeLayout>
+
+
     </ScrollView>
 </RelativeLayout>

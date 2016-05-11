@@ -51,7 +51,7 @@
                     android:id="@+id/today_target"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="每日目标100步" />
+                    android:text="每日目标1000步" />
             </LinearLayout>
         </RelativeLayout>
 

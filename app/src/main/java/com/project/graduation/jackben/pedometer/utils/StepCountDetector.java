@@ -45,6 +45,10 @@ public class StepCountDetector implements SensorEventListener {
         mScale[1] = -(h * 0.5f * (1.0f / (SensorManager.MAGNETIC_FIELD_EARTH_MAX)));
     }
 
+    public void setSensitivity(int sensitivity) {
+        SENSITIVITY = sensitivity;
+    }
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         Sensor sensor = event.sensor;

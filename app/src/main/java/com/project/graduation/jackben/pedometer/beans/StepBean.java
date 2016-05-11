@@ -3,6 +3,7 @@ package com.project.graduation.jackben.pedometer.beans;
 import cn.bmob.v3.BmobObject;
 
 /**
+ * 步数实体Bean
  * User: XinYuan(1054344254@qq.com)
  * Date: 2015-11-10
  * Time: 16:46

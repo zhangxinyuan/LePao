@@ -178,7 +178,7 @@ public class CurrentLocationFragment extends Fragment implements AMapLocationLis
     }
 
     /**
-     * 画线
+     * 画轨迹线
      *
      * @param oldLatLng
      * @param newLatLng

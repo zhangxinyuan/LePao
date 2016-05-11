@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +23,16 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.project.graduation.jackben.pedometer.R;
+import com.project.graduation.jackben.pedometer.beans.StepBean;
+import com.project.graduation.jackben.pedometer.beans.UserBean;
+import com.project.graduation.jackben.pedometer.db.PedometerDbUtil;
 import com.project.graduation.jackben.pedometer.service.StepCountService;
 import com.project.graduation.jackben.pedometer.utils.StepCountDetector;
 import com.project.graduation.jackben.pedometer.view.ShowPercentView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,7 +42,8 @@ import java.util.List;
  * Time: 12:35
  */
 public class HomeFragment extends Fragment implements View.OnClickListener {
-    private static  HomeFragment mHomeFragment=null;
+    private static final String TAG = "HomeFragment";
+    private static HomeFragment mHomeFragment = null;
     private View view;
     private FloatingActionButton fab;
     private ShowPercentView mCircleView;
@@ -46,37 +53,55 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private TextView today_calorie;
     private LineChart chart;
     private MThread mThread;
+    private int current_step_count;
+    private PedometerDbUtil dbUtils;
+    private UserBean userBean;
+    private  String date;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    int current_step_count = StepCountDetector.CURRENT_SETP;
                     mCircleView.setPercent(current_step_count);
-                    today_step_count.setText("" + current_step_count);
+                    today_step_count.setText( current_step_count+"");
+                    today_distance.setText((current_step_count * userBean.getUserStepLength())+"m");
+                    today_calorie.setText((current_step_count * userBean.getUserStepLength() * userBean.getUserWeight() * 0.01 * 0.01)/200 + "");
                     break;
             }
         }
     };
-    public static HomeFragment getInstance(){
-        if (mHomeFragment==null){
-            synchronized (HomeFragment.class){
-                if (mHomeFragment==null){
-                    mHomeFragment=new HomeFragment();
+
+    public static HomeFragment getInstance() {
+        if (mHomeFragment == null) {
+            synchronized (HomeFragment.class) {
+                if (mHomeFragment == null) {
+                    mHomeFragment = new HomeFragment();
                 }
             }
         }
         return mHomeFragment;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         initView();
+        initDB();
         initChart();
         startStep();
         startThread();
         return view;
+    }
+
+    private void initDB() {
+        date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        dbUtils = PedometerDbUtil.getInstance(getActivity().getApplicationContext());
+        userBean = dbUtils.queryUserInfo();
+        StepBean stepBean = dbUtils.getStepByDate(userBean.getUserId(), date);
+        if (stepBean!=null){
+            StepCountDetector.CURRENT_SETP=stepBean.getStepCount()==null?0:stepBean.getStepCount();
+        }
     }
 
     private void startThread() {
@@ -118,7 +143,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         public void run() {
             super.run();
             while (true) {
-
+                current_step_count = StepCountDetector.CURRENT_SETP;
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
@@ -149,6 +174,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    @Override
+    public void onPause() {
+        Log.i(TAG, "onPause");
+        saveStepData();
+
+        super.onPause();
+    }
+
+    private void saveStepData() {
+        //退出时保存当前步数
+        StepBean stepBean = new StepBean();
+        stepBean.setUserId(userBean.getUserId());
+        stepBean.setDate(date);
+        stepBean.setStepConut(current_step_count);
+        StepBean stepByDate = dbUtils.getStepByDate(userBean.getUserId(), date);
+        if (stepByDate==null){
+            dbUtils.insertStep(stepBean);
+        }
+        dbUtils.updateStep(stepBean);
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, "onDestroy");
+        super.onDestroy();
+    }
 
     /**
      * 初始化图表的属性
@@ -186,7 +237,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         yAxisLeft.setDrawGridLines(false);
         yAxisLeft.setDrawAxisLine(false);
         yAxisLeft.setLabelCount(2, false);
-        yAxisLeft.setStartAtZero(false);
+        yAxisLeft.setAxisMinValue(0f);
         yAxisLeft.setDrawLabels(true);
         //设置Y轴（右边）的属性
         YAxis yAxisRight = chart.getAxisRight();

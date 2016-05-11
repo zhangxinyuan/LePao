@@ -6,6 +6,10 @@
     <color name="colorWhite">#fff</color>
 
     <color name="black_overlay">#66000000</color>
-
+    <color name="setting_bg_color">#EEEEEE</color>
     <color name="colorGrey">#F0F0F0</color>
+    <color name="qq_login_btn_color">#1AB2E8</color>
+    <color name="qq_login_btn_pressed_color">#31BAEA</color>
+    <color name="sina_login_btn_color">#FFBC46</color>
+    <color name="sina_login_btn_pressed_color">#FFC359</color>
 </resources>

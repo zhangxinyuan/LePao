@@ -7,15 +7,19 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.project.graduation.jackben.pedometer.beans.UserBean;
+import com.project.graduation.jackben.pedometer.db.PedometerDbUtil;
+
 import cn.bmob.v3.Bmob;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class WelcomeActivity extends AppCompatActivity implements Animation.AnimationListener{
+public class SplashActivity extends AppCompatActivity implements Animation.AnimationListener {
 
     private View mContentView;
+    private UserBean userBean = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,8 @@ public class WelcomeActivity extends AppCompatActivity implements Animation.Anim
         animation.setFillAfter(true);
         mContentView.setAnimation(animation);
         animation.setAnimationListener(this);
+        PedometerDbUtil dbUtil = PedometerDbUtil.getInstance(this);
+        userBean = dbUtil.queryUserInfo();//取用户信息
 
     }
 
@@ -42,8 +48,12 @@ public class WelcomeActivity extends AppCompatActivity implements Animation.Anim
 
     @Override
     public void onAnimationEnd(Animation animation) {
-        startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
-        finish();
+        if (userBean == null) {//信息为空，说明没登录
+            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+        } else {
+            startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+        }
+        this.finish();
     }
 
     @Override

@@ -4,7 +4,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_user">UserActivity</string>
+    <string name="title_activity_user">我的资料</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
 </resources>
