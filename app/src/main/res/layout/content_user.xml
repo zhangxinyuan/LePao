@@ -43,8 +43,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="乐享家"
+                        android:text="乐跑运动"
                         android:textSize="25sp"
+                        android:maxLength="4"
                         android:textColor="@color/qq_login_btn_color"
                         />
 

@@ -21,7 +21,7 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:id="@+id/them_change"
+                android:id="@+id/setting_user"
                 android:layout_width="fill_parent"
                 android:layout_height="80dp"
                 android:background="@drawable/select_selector">
@@ -41,7 +41,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/user_icon"
-                    android:text="打扰了"
+                    android:text="乐跑运动"
                     android:textSize="25sp"/>
 
                 <ImageView
@@ -57,15 +57,15 @@
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:layout_below="@+id/them_change"
+                android:layout_below="@+id/setting_user"
                 android:background="@mipmap/list_divider"
                 />
 
             <RelativeLayout
-                android:id="@+id/setting_msg_warn"
+                android:id="@+id/setting_step"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/them_change"
+                android:layout_below="@+id/setting_user"
                 android:layout_marginTop="1dp"
                 android:background="@drawable/select_selector">
 
@@ -94,23 +94,23 @@
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:layout_below="@+id/setting_msg_warn"
+                android:layout_below="@+id/setting_step"
                 android:background="@mipmap/list_divider"
                 />
 
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:layout_below="@+id/setting_msg_warn"
+                android:layout_below="@+id/setting_step"
                 android:layout_marginTop="24dp"
                 android:background="@mipmap/list_divider"
                 />
 
             <RelativeLayout
-                android:id="@+id/setting_remove_cache"
+                android:id="@+id/setting_msg"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/setting_msg_warn"
+                android:layout_below="@+id/setting_step"
                 android:layout_marginTop="25dp"
                 android:background="@drawable/select_selector"
                 android:clickable="true">
@@ -138,7 +138,7 @@
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:layout_below="@+id/setting_remove_cache"
+                android:layout_below="@+id/setting_msg"
                 android:background="@mipmap/list_divider"
                 />
 
@@ -146,7 +146,7 @@
                 android:id="@+id/seeting_share"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/setting_remove_cache"
+                android:layout_below="@+id/setting_msg"
                 android:layout_marginTop="1dp"
                 android:background="@drawable/select_selector"
                 android:clickable="true">
@@ -158,7 +158,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:text="离线地图"
+                    android:text="推荐分享"
                     android:textSize="16sp"/>
 
                 <ImageView

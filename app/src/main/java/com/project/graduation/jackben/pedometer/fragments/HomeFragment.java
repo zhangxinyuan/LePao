@@ -2,18 +2,20 @@ package com.project.graduation.jackben.pedometer.fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -30,10 +32,13 @@ import com.project.graduation.jackben.pedometer.service.StepCountService;
 import com.project.graduation.jackben.pedometer.utils.StepCountDetector;
 import com.project.graduation.jackben.pedometer.view.ShowPercentView;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 计步界面
@@ -56,7 +61,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private int current_step_count;
     private PedometerDbUtil dbUtils;
     private UserBean userBean;
-    private  String date;
+    private String date;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -64,9 +69,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             switch (msg.what) {
                 case 0:
                     mCircleView.setPercent(current_step_count);
-                    today_step_count.setText( current_step_count+"");
-                    today_distance.setText((current_step_count * userBean.getUserStepLength())+"m");
-                    today_calorie.setText((current_step_count * userBean.getUserStepLength() * userBean.getUserWeight() * 0.01 * 0.01)/200 + "");
+                    today_step_count.setText(String.valueOf(current_step_count));
+                    today_distance.setText(String.valueOf(current_step_count * userBean.getUserStepLength()));
+                    today_calorie.setText(String.valueOf((current_step_count * userBean.getUserStepLength() * userBean.getUserWeight() * 0.01 * 0.01) / 200000));
                     break;
             }
         }
@@ -95,12 +100,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initDB() {
-        date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         dbUtils = PedometerDbUtil.getInstance(getActivity().getApplicationContext());
         userBean = dbUtils.queryUserInfo();
         StepBean stepBean = dbUtils.getStepByDate(userBean.getUserId(), date);
-        if (stepBean!=null){
-            StepCountDetector.CURRENT_SETP=stepBean.getStepCount()==null?0:stepBean.getStepCount();
+        if (stepBean != null) {
+            StepCountDetector.CURRENT_SETP = stepBean.getStepCount() == null ? 0 : stepBean.getStepCount();
         }
     }
 
@@ -166,13 +171,55 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab:
-                //snackber可以替换toast
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //分享截屏
+                shareScreen();
                 break;
         }
 
     }
+
+    /***
+     * 截屏分享
+     */
+    private void shareScreen() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.US);
+        String filePath = "/sdcard/" + sdf.format(new Date()) + ".png";
+        getScreen(filePath);
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        File image = new File(filePath);
+        if (image != null && image.exists() && image.isFile()) {
+            shareIntent.setType("image/png");
+            Uri uri = Uri.fromFile(image);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        }
+        startActivity(Intent.createChooser(shareIntent, "分享到"));
+
+
+    }
+
+    /**
+     * 截屏
+     * @param filePath
+     */
+    private void getScreen(String filePath) {
+        View view = getActivity().getWindow().getDecorView().getRootView();
+        view.setDrawingCacheEnabled(true);
+        view.buildDrawingCache();
+        Bitmap bitmap = view.getDrawingCache();
+        if (bitmap != null) {
+            try {
+                FileOutputStream out = new FileOutputStream(filePath);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(getActivity(), "出错了！", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(getActivity(), "出错了！", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     @Override
     public void onPause() {
@@ -189,7 +236,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         stepBean.setDate(date);
         stepBean.setStepConut(current_step_count);
         StepBean stepByDate = dbUtils.getStepByDate(userBean.getUserId(), date);
-        if (stepByDate==null){
+        if (stepByDate == null) {
             dbUtils.insertStep(stepBean);
         }
         dbUtils.updateStep(stepBean);

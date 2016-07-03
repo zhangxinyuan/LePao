@@ -29,7 +29,7 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
         //初始化bmob服务器
         Bmob.initialize(this, "b11275335a9208ba615a41c536efe906");
         mContentView = findViewById(R.id.fullscreen_content);
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.welcome_anim);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.splash_anim);
         animation.setFillEnabled(true);
         animation.setFillAfter(true);
         mContentView.setAnimation(animation);

@@ -18,7 +18,7 @@ public class PedometerOpenHelper extends SQLiteOpenHelper {
     private static final String STEP_TABLE_NAME = "step";
 
     private static final String STEP_TABLE_CREATE = "CREATE TABLE " + STEP_TABLE_NAME + "("
-            + "_id integer primary key autoincrement," + "userId TEXT," + "stepCount integer," + "date TEXT" + ")";
+            + "_id integer primary key autoincrement," + "userId TEXT," + "stepCount integer," + "stepDate date" + ")";
     private static final String USER_TABLE_CREATE = "CREATE TABLE " + USER_TABLE_NAME + "(" +"_id integer primary key autoincrement," + "userId TEXT," + "userName TEXT,"
             + "userSex TEXT," + "userPic BLOB," + "userWeight integer," + "userHeight integer," + "userSensitivity integer," + "userStepLength integer" + ")";
 

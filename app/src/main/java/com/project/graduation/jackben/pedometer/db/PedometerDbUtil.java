@@ -84,25 +84,27 @@ public class PedometerDbUtil {
             values.put("userHeight", user.getUserHeight());
             values.put("userSensitivity", user.getUserSensitivity());
             values.put("userStepLength", user.getUserStepLength());
-            db.update("user", values, "userId = ?",
+            db.update(USER_TABLE_NAME, values, "userId = ?",
                     new String[]{user.getUserId()});
         }
+
     }
 
     public void updateUserName(String userId, String name) {
         if (userId != null) {
             ContentValues values = new ContentValues();
             values.put("userName", name);
-            db.update("user", values, "userId = ?",
+            db.update(USER_TABLE_NAME, values, "userId = ?",
                     new String[]{userId});
         }
+
     }
 
     public void updateUserSex(String userId, String sex) {
         if (userId != null) {
             ContentValues values = new ContentValues();
             values.put("userSex", sex);
-            db.update("user", values, "userId = ?",
+            db.update(USER_TABLE_NAME, values, "userId = ?",
                     new String[]{userId});
         }
     }
@@ -111,7 +113,7 @@ public class PedometerDbUtil {
         if (userId != null) {
             ContentValues values = new ContentValues();
             values.put("userWeight", weight);
-            db.update("user", values, "userId = ?",
+            db.update(USER_TABLE_NAME, values, "userId = ?",
                     new String[]{userId});
         }
     }
@@ -120,7 +122,7 @@ public class PedometerDbUtil {
         if (userId != null) {
             ContentValues values = new ContentValues();
             values.put("userWeight", height);
-            db.update("user", values, "userId = ?",
+            db.update(USER_TABLE_NAME, values, "userId = ?",
                     new String[]{userId});
         }
     }
@@ -129,7 +131,7 @@ public class PedometerDbUtil {
         if (userId != null) {
             ContentValues values = new ContentValues();
             values.put("userStepLength", length);
-            db.update("user", values, "userId = ?",
+            db.update(USER_TABLE_NAME, values, "userId = ?",
                     new String[]{userId});
         }
     }
@@ -138,14 +140,14 @@ public class PedometerDbUtil {
         if (userId != null) {
             ContentValues values = new ContentValues();
             values.put("userSensitivity", sens);
-            db.update("user", values, "userId = ?",
+            db.update(USER_TABLE_NAME, values, "userId = ?",
                     new String[]{userId});
         }
     }
 
     public UserBean queryUserInfo() {
         UserBean user = null;
-        Cursor cursor = db.query("user", null, null, null, null, null, null);
+        Cursor cursor = db.query(USER_TABLE_NAME, null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             user = new UserBean();
             user.setUserId(cursor.getString(cursor.getColumnIndex("userId")));
@@ -171,7 +173,7 @@ public class PedometerDbUtil {
         if (stepBean != null) {
             ContentValues stepValues = new ContentValues();
             stepValues.put("userId", stepBean.getUserId());
-            stepValues.put("date", stepBean.getDate());
+            stepValues.put("stepDate", stepBean.getDate());
             stepValues.put("stepCount", stepBean.getStepCount());
             db.insert(STEP_TABLE_NAME, null, stepValues);
         }
@@ -187,7 +189,7 @@ public class PedometerDbUtil {
         if (stepBean != null) {
             ContentValues stepValues = new ContentValues();
             stepValues.put("stepCount", stepBean.getStepCount());
-            db.update(STEP_TABLE_NAME, stepValues, "userId = ? and date = ?", new String[]{
+            db.update(STEP_TABLE_NAME, stepValues, "userId = ? and stepDate = ?", new String[]{
                     stepBean.getUserId(), stepBean.getDate()});
         }
 
@@ -202,12 +204,12 @@ public class PedometerDbUtil {
      */
     public StepBean getStepByDate(String userId, String date) {
         StepBean step = null;
-        Cursor cursor = db.query(STEP_TABLE_NAME, null, "userId = ? and date = ?", new String[]{userId, date}, null, null, null);
+        Cursor cursor = db.query(STEP_TABLE_NAME, null, "userId = ? and stepDate = ?", new String[]{userId, date}, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 step = new StepBean();
                 step.setUserId(userId);
-                step.setDate(cursor.getString(cursor.getColumnIndex("date")));
+                step.setDate(cursor.getString(cursor.getColumnIndex("stepDate")));
                 step.setStepConut(cursor.getInt(cursor.getColumnIndex("stepCount")));
                 Log.i(TAG, "得到一个step");
             } while (cursor.moveToNext());
@@ -225,7 +227,7 @@ public class PedometerDbUtil {
             do {
                 StepBean step = new StepBean();
                 step.setUserId(userId);
-                step.setDate(cursor.getString(cursor.getColumnIndex("date")));
+                step.setDate(cursor.getString(cursor.getColumnIndex("stepDate")));
                 step.setStepConut(cursor.getInt(cursor.getColumnIndex("stepCount")));
                 Log.i(TAG, "得到一个step");
                 stepList.add(step);

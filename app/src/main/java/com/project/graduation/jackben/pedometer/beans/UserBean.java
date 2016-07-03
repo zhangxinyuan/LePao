@@ -14,16 +14,19 @@ public class UserBean extends BmobObject {
     private String userName;
     private String userSex;
     private String userPic;
-    private Integer userWeight;
-    private Integer userHeight;
-    private Integer userSensitivity;
-    private Integer userStepLength;
+    private int userWeight;
+    private int userHeight;
+    private int userSensitivity;
+    private double userStepLength;
 
-    public Integer getUserStepLength() {
+    public double getUserStepLength() {
+        if (userStepLength==0){
+            return  0.6;
+        }
         return userStepLength;
     }
 
-    public void setUserStepLength(Integer userStepLength) {
+    public void setUserStepLength(double userStepLength) {
         this.userStepLength = userStepLength;
     }
 
@@ -35,11 +38,11 @@ public class UserBean extends BmobObject {
         this.userId = userId;
     }
 
-    public Integer getUserSensitivity() {
+    public int getUserSensitivity() {
         return userSensitivity;
     }
 
-    public void setUserSensitivity(Integer userSensitivity) {
+    public void setUserSensitivity(int userSensitivity) {
         this.userSensitivity = userSensitivity;
     }
 
@@ -67,19 +70,22 @@ public class UserBean extends BmobObject {
         this.userPic = userPic;
     }
 
-    public Integer getUserWeight() {
+    public int getUserWeight() {
         return userWeight;
     }
 
-    public void setUserWeight(Integer userWeight) {
+    public void setUserWeight(int userWeight) {
         this.userWeight = userWeight;
     }
 
-    public Integer getUserHeight() {
+    public int getUserHeight() {
+        if (userWeight==0){
+            return 50;
+        }
         return userHeight;
     }
 
-    public void setUserHeight(Integer userHeight) {
+    public void setUserHeight(int userHeight) {
         this.userHeight = userHeight;
     }
 }

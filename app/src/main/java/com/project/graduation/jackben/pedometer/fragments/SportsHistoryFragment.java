@@ -3,7 +3,7 @@ package com.project.graduation.jackben.pedometer.fragments;
 import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +19,13 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.project.graduation.jackben.pedometer.R;
+import com.project.graduation.jackben.pedometer.beans.StepBean;
+import com.project.graduation.jackben.pedometer.db.PedometerDbUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * User: XinYuan(1054344254@qq.com)
@@ -28,10 +33,14 @@ import java.util.ArrayList;
  * Time: 12:10
  */
 public class SportsHistoryFragment extends Fragment {
+    private static final String TAG = "SportsHistoryFragment";
     private View view;
     private BarChart historyBarChart;
     private Typeface mTf;
-    private static SportsHistoryFragment mSportsHistoryFragment = null;
+    private static SportsHistoryFragment mSportsHistoryFragment;
+    private String[] mWeek = new String[]{"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
+    private Calendar calendar;
+    private PedometerDbUtil dbUtil;
 
     public static SportsHistoryFragment getInstance() {
         if (mSportsHistoryFragment == null) {
@@ -44,11 +53,11 @@ public class SportsHistoryFragment extends Fragment {
         return mSportsHistoryFragment;
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_sporthistory, container, false);
         historyBarChart = (BarChart) view.findViewById(R.id.history_bar_chart);
+        dbUtil = PedometerDbUtil.getInstance(getActivity());
         initChart();
         return view;
 
@@ -93,14 +102,10 @@ public class SportsHistoryFragment extends Fragment {
         l.setFormSize(9f);
         l.setTextSize(11f);
         l.setXEntrySpace(4f);
-        // l.setExtra(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
-        // "def", "ghj", "ikl", "mno" });
-        // l.setCustom(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
-        // "def", "ghj", "ikl", "mno" });
 
         // set data
 
-        setData(7, 50);
+        setData();
 
         // do not forget to refresh the chart
 //            holder.chart.invalidate();
@@ -108,37 +113,39 @@ public class SportsHistoryFragment extends Fragment {
 
     }
 
-    private void setData(int count, float range) {
-        String[] mMonths = new String[]{
-                "周一", "周二", "周三", "周四", "周五", "周六", "周日"
-        };
+    private void setData() {
 
         //X轴数据
         ArrayList<String> xVals = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            xVals.add(mMonths[i]);
-        }
-
         //Y轴数据
         ArrayList<BarEntry> yVals1 = new ArrayList<>();
 
-        for (int i = 0; i < count; i++) {
-            float mult = (range + 1);
-            float val = (float) (Math.random() * mult);
-            yVals1.add(new BarEntry(val, i));
+        for (int i = 0; i < 7; i++) {
+
+            calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_WEEK, -i);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String fDate = sdf.format(calendar.getTime());
+            Log.i(TAG,"当前日期："+fDate);
+            String userId=dbUtil.queryUserInfo().getUserId();
+            if (userId != null) {
+                Log.i(TAG,"UserId："+userId);
+                String week = dateToWeek(calendar.getTime());
+                Log.i(TAG,"今天是："+week);
+                xVals.add(week);
+                StepBean stepByDate = dbUtil.getStepByDate(userId, fDate);
+                if (stepByDate != null) {
+                    Integer stepCount = stepByDate.getStepCount();
+                    Log.i(TAG,"stepCount："+stepCount);
+                    yVals1.add(new BarEntry(stepCount == null ? 0 : (int)stepCount, i));
+                }
+
+            }
+
         }
 
         BarDataSet set1;
-
-//        if (historyBarChart.getData() != null &&
-//                historyBarChart.getData().getDataSetCount() > 0) {
-//            set1 = (BarDataSet)historyBarChart.getData().getDataSetByIndex(0);
-//            set1.set(yVals1);
-//            historyBarChart.getData().setXVals(xVals);
-//            historyBarChart.getData().notifyDataChanged();
-//            historyBarChart.notifyDataSetChanged();
-//        } else {
-        set1 = new BarDataSet(yVals1, "DataSet");
+        set1 = new BarDataSet(yVals1, "步数");
         set1.setBarSpacePercent(35f);
         set1.setColors(ColorTemplate.JOYFUL_COLORS);
 
@@ -150,7 +157,23 @@ public class SportsHistoryFragment extends Fragment {
         data.setValueTypeface(mTf);
 
         historyBarChart.setData(data);
-//        }
+
+    }
+
+    /**
+     * 日期转星期
+     * @param date
+     * @return
+     */
+    private String dateToWeek(Date date) {
+
+        calendar.setTime(date);
+        int i = calendar.get(Calendar.DAY_OF_WEEK);
+        if (i < 1 || i > mWeek.length) {
+            return null;
+        }
+
+        return mWeek[i - 1];
     }
 
 

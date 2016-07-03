@@ -21,9 +21,6 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.PolylineOptions;
 import com.project.graduation.jackben.pedometer.R;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * User: XinYuan(1054344254@qq.com)
  * Date: 2015-10-30
@@ -78,7 +75,7 @@ public class CurrentLocationFragment extends Fragment implements AMapLocationLis
             aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
             aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
             // 设置定位的类型为定位模式，参见类AMap。共有三种模式
-            aMap.setMyLocationType(AMap.LOCATION_TYPE_MAP_FOLLOW);
+            aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
             aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
         }
     }
@@ -129,11 +126,6 @@ public class CurrentLocationFragment extends Fragment implements AMapLocationLis
         mLocationOption.setNeedAddress(true);
         //设置是否只定位一次,默认为false
         mLocationOption.setOnceLocation(false);
-        /**
-         * 设置是否优先返回GPS定位结果，如果30秒内GPS没有返回定位结果则进行网络定位
-         * 注意：只有在高精度模式下的单次定位有效，其他方式无效
-         */
-        mLocationOption.setGpsFirst(true);
         //设置是否强制刷新WIFI，默认为强制刷新
         mLocationOption.setWifiActiveScan(true);
         //设置是否允许模拟位置,默认为false，不允许模拟位置
@@ -160,13 +152,11 @@ public class CurrentLocationFragment extends Fragment implements AMapLocationLis
                     oldLatLng = newLatLng;
                     isFirstLatLng = false;
                 }
-                if (oldLatLng != oldLatLng) {
+                if (oldLatLng != newLatLng) {
                     drawLine(oldLatLng, newLatLng);
                     oldLatLng = newLatLng;
 
                 }
-                //定位成功回调信息，设置相关消息
-                getLocationData(amapLocation);
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                 Log.e("AmapError", "location Error, ErrCode:"
@@ -188,25 +178,6 @@ public class CurrentLocationFragment extends Fragment implements AMapLocationLis
         aMap.addPolyline(new PolylineOptions().add(oldLatLng, newLatLng).geodesic(true).color(Color.RED));
     }
 
-    private void getLocationData(AMapLocation amapLocation) {
-        amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
-        amapLocation.getLatitude();//获取纬度
-        amapLocation.getLongitude();//获取经度
-        amapLocation.getAccuracy();//获取精度信息
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date(amapLocation.getTime());
-        df.format(date);//定位时间
-        amapLocation.getAddress();//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
-        amapLocation.getCountry();//国家信息
-        amapLocation.getProvince();//省信息
-        amapLocation.getCity();//城市信息
-        amapLocation.getDistrict();//城区信息
-        amapLocation.getStreet();//街道信息
-        amapLocation.getStreetNum();//街道门牌号信息
-        amapLocation.getCityCode();//城市编码
-        amapLocation.getAdCode();//地区编码
-        amapLocation.getAoiName();//获取当前定位点的AOI信息
-    }
 
 
     @Override

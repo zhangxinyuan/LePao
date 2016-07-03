@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import com.project.graduation.jackben.pedometer.beans.UserBean;
 import com.project.graduation.jackben.pedometer.db.PedometerDbUtil;
 
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = "UserActivity";
     private FloatingActionButton fab;
     private CardView pickname_card_view, sex_card_view, height_card_view, weight_card_view;
     private TextView pickname, sex, height, weight;
@@ -54,11 +56,12 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         dbUtil = PedometerDbUtil.getInstance(this);
         UserBean userBean = dbUtil.queryUserInfo();
         if (userBean != null) {
-             userId = userBean.getUserId();
-            pickname.setText(userBean.getUserName());
-            sex.setText(userBean.getUserSex());
-            height.setText(userBean.getUserHeight()+"");
-            weight.setText(userBean.getUserWeight()+"");
+            userId = userBean.getUserId();
+            pickname.setText("乐跑运动");
+//            sex.setText(userBean.getUserSex()==null?"男":userBean.getUserSex());
+            Log.i(TAG,"userBean.getUserSex()"+userBean.getUserSex());
+            height.setText(String.valueOf(userBean.getUserHeight())+"m");
+            weight.setText(String.valueOf(userBean.getUserWeight())+"kg");
         }
     }
 
